@@ -1,4 +1,4 @@
-import { expect, Locator, Page } from '@playwright/test';
+import {expect, Locator, Page} from '@playwright/test';
 
 export class SearchPage {
     readonly page: Page;
@@ -6,40 +6,44 @@ export class SearchPage {
     readonly searchInputIcone: Locator;
     readonly searchInputText: Locator;
     readonly searchResultReleaseNotes: Locator;
-    readonly searchResultVersion: Locator;
-    readonly searchResultSupportedLanguages: Locator;
-    readonly searchResultVsCode: Locator;
-    readonly searchResultCanaryRelease: Locator;
-    readonly searchResultTotal: Locator;
     readonly selectSearch: Locator;
+    readonly searchHitMessage: Locator;
+    readonly searchHitTitle: Locator;
+    readonly searchCrossRemoveFrom: Locator;
+    readonly searchAddToFavorite: Locator;
+    readonly searchRemoveFromFavorite: Locator;
+    readonly searchFavoriteHitMessage: Locator;
+    readonly noResentSearches: Locator;
 
     constructor(page: Page) {
         this.page = page;
         this.searchInput = page.getByRole('searchbox', {name: 'Search'});
         this.searchInputIcone = page.locator('#docsearch-label');
-        //this.searchInputText = page.getByRole('searchbox', {name: 'Search'});
         this.searchResultReleaseNotes = page.getByRole('link', {
             name: 'Release notes',
             exact: true,
         });
-        this.searchResultVersion = page.getByRole('link', {
-            name: 'Version 1.51 Release notes',
-        });
-        this.searchResultSupportedLanguages = page.getByRole('link', {
-            name: 'Supported languages',
-        });
-        this.searchResultVsCode = page.getByRole('link', {
-            name: 'Getting started - VS Code',
-        });
-        this.searchResultCanaryRelease = page.getByRole('link', {
-            name: 'Canary releases',
-        });
-        this.searchResultTotal = page.getByRole('link', {
-            name: 'See all 459 results',
-        });
+
         this.selectSearch = page.getByRole('link', {
             name: 'Release notes',
             exact: true,
+        });
+        this.searchHitMessage = page.locator('.DocSearch-Hit-source').first();
+        this.searchHitTitle = page.locator('.DocSearch-Hit-title', {
+            hasText: 'Release notes',
+        });
+        this.searchCrossRemoveFrom = page.getByRole('button', {
+            name: 'Remove this search from',
+        });
+        this.searchAddToFavorite = page.getByRole('button', {
+            name: 'Save this search',
+        });
+        this.searchRemoveFromFavorite = page.locator(
+            '[title="Remove this search from history"]',
+        );
+        this.searchFavoriteHitMessage = page.locator('.DocSearch-Hit-source');
+        this.noResentSearches = page.locator('.DocSearch-Help', {
+            hasText: 'No recent searches',
         });
     }
 
@@ -54,35 +58,56 @@ export class SearchPage {
         await this.searchInput.fill(txt);
     }
     async verifysearchResultReleaseNotes(txt: string) {
+        await this.searchResultReleaseNotes.waitFor({state: 'visible'});
         await expect(this.searchResultReleaseNotes).toBeVisible();
         await expect(this.searchResultReleaseNotes).toHaveText(txt);
     }
 
-    async verifysearchResultVersion(txt: string) {
-        await expect(this.searchResultVersion).toBeVisible();
-        await expect(this.searchResultVersion).toHaveText(txt);
-    }
-
-    async verifysearchResultSupportedLanguages(txt: string) {
-        await expect(this.searchResultSupportedLanguages).toBeVisible();
-        await expect(this.searchResultSupportedLanguages).toHaveText(txt);
-    }
-
-    async verifysearchResultVsCode(txt: string) {
-        await expect(this.searchResultVsCode).toBeVisible();
-        await expect(this.searchResultVsCode).toHaveText(txt);
-    }
-
-    async verifysearchResultCanaryRelease(txt: string) {
-        await expect(this.searchResultCanaryRelease).toBeVisible();
-        await expect(this.searchResultCanaryRelease).toHaveText(txt);
-    }
-    async verifysearchResultTotal(txt: string) {
-        await expect(this.searchResultTotal).toBeVisible();
-        await expect(this.searchResultTotal).toHaveText(txt);
-    }
-
     async searchSelect() {
         await this.selectSearch.click();
+    }
+
+    async verifySearchHitMessage() {
+        await expect(this.searchHitMessage).toBeVisible();
+    }
+
+    async verifyHitTitle(txt: string) {
+        await expect(this.searchHitTitle).toBeVisible();
+        await expect(this.searchHitTitle).toHaveText(txt);
+    }
+
+    async verifySearchDeleteFrom() {
+        await expect(this.searchCrossRemoveFrom).toBeVisible();
+    }
+
+    async deleteFromFavorite() {
+        await this.searchCrossRemoveFrom.click();
+    }
+
+    async verifyAddToFAvoriteIconeAndAdd() {
+        await expect(this.searchAddToFavorite).toBeVisible();
+        await this.searchAddToFavorite.click();
+    }
+
+    async verifyRemoveFromFavorite() {
+        await expect(this.searchRemoveFromFavorite).toBeVisible();
+    }
+
+    async removeFromFavoriteQuerry() {
+        await this.searchRemoveFromFavorite.click();
+    }
+
+    async verifyFavoriteMessage(txt: string) {
+        await expect(this.searchFavoriteHitMessage).toHaveText(txt);
+    }
+
+    async verifyNoResentSearches() {
+        await expect(this.noResentSearches).toHaveText('No recent searches');
+    }
+
+    async verifyLinksVisibility(links: {name: string; exact?: boolean}[]) {
+        for (const link of links) {
+            await expect(this.page.getByRole('link', link)).toBeVisible();
+        }
     }
 }

@@ -1,4 +1,4 @@
-import { expect, Locator, Page } from '@playwright/test';
+import {expect, Locator, Page} from '@playwright/test';
 
 export class HomePage {
     readonly page: Page;
@@ -17,11 +17,17 @@ export class HomePage {
     }
 
     async verifyHomePage() {
-        await expect(this.page).toHaveTitle(/Playwright/);
+        await expect(this.page).toHaveTitle(
+            /Fast and reliable end-to-end testing for modern web apps | Playwright/,
+        );
         await expect(this.page).toHaveURL('https://playwright.dev/');
     }
 
     async verifygitHubLink() {
+        await this.gitHubLink.click();
+    }
+
+    async verifygitHubIcon() {
         await expect(this.gitHubLink).toBeVisible();
     }
 
