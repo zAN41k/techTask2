@@ -29,7 +29,6 @@ test.describe('End-to-End search flow', () => {
         await test.step('verify search funstionality we put docs and received proper data', async () => {
             searchPage.verifySearchInput();
             searchPage.verifySearchInputIcone();
-            //verify search funstionality we put docs and received proper data
             searchPage.inputTxt('docs');
             await searchPage.verifyLinksVisibility(linksToVerify);
         });
