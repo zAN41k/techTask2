@@ -11,9 +11,10 @@ export class HomePage {
         this.page = page;
         this.gitHubLink = page.getByRole('link', {name: 'GitHub repository'});
         this.discordLink = page.getByRole('link', {name: 'Discord server'});
-        this.searchButton = page.getByRole('button', {
-            name: 'Search (Command+K)',
-        });
+        // this.searchButton = page.getByRole('button', {
+        //     name: 'Search (Command+K)',
+        // });
+        this.searchButton = page.getByLabel('Search');
     }
 
     async verifyHomePage() {
