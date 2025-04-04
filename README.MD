@@ -1,4 +1,4 @@
-# TechTask
+# This repo using for practice with Playwright
 
 This project is a Playwright-based test automation framework for testing web applications. It includes test cases for verifying various functionalities, such as navigating to GitHub links, managing local storage, and performing search flows.
 
@@ -16,8 +16,8 @@ This project is a Playwright-based test automation framework for testing web app
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
-   cd techtask
+   git clone git@github.com:zAN41k/techTask2.git
+   cd techtask2
 
 
 Install dependencies
@@ -44,6 +44,11 @@ Run Tests in Headed Mode
 To run tests with a visible browser window:
 
 npx playwright test --headed
+
+Run test in ui mode
+
+npx playwright test --ui
+
 
 Generate an HTML Report
 To generate a test report:
