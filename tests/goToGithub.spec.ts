@@ -1,14 +1,14 @@
-import { expect, test } from '@playwright/test';
+import {test} from '@playwright/test';
+import {HomePage} from '../pages/home.page';
+import {Github} from '../pages/github.page';
 
-test('Open gitHublink', async ({page}) => {
+test('Open gitHub link via playwright.dev', async ({page}) => {
+    const homePage = new HomePage(page);
+
     await page.goto('/');
     const page2Promise = page.waitForEvent('popup');
-    await page.getByRole('link', {name: 'GitHub repository'}).click();
+    homePage.verifygitHubLink();
     const gitHub = await page2Promise;
-
-    await expect(gitHub).toHaveTitle(
-        'GitHub - microsoft/playwright: Playwright is a framework for Web Testing and Automation. It allows testing Chromium, Firefox and WebKit with a single API.',
-    );
-    await gitHub.waitForLoadState();
-    await expect(gitHub).toHaveURL('https://github.com/microsoft/playwright');
+    const githubPage = new Github(gitHub);
+    await githubPage.verifyGithubPage();
 });

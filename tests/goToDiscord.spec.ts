@@ -1,14 +1,17 @@
-import { expect, test } from '@playwright/test';
+import {test} from '@playwright/test';
+import {HomePage} from '../pages/home.page';
+import {DiscordPage} from '../pages/discord.page';
 
-test('Open Discord via Playwright.dev ', async ({page}) => {
-    await page.goto('/');
-    const page2Promise = page.waitForEvent('popup');
-    await page.getByRole('link', {name: 'Discord server'}).click();
-    const discord = await page2Promise;
+test.describe('Discord Navigation Tests', () => {
+    test('Open Discord via Playwright.dev', async ({page}) => {
+        const homePage = new HomePage(page);
+        await page.goto('/');
 
-    await expect(discord).toHaveTitle('Playwright - Discord Servers');
-    await discord.waitForLoadState();
-    await expect(discord).toHaveURL(
-        'https://discord.com/servers/playwright-807756831384403968',
-    );
+        const page2Promise = page.waitForEvent('popup');
+        await homePage.clickDiscordLink();
+        const discordPopup = await page2Promise;
+
+        const discordPage = new DiscordPage(discordPopup);
+        await discordPage.verifyDiscordPage();
+    });
 });
