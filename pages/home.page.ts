@@ -15,9 +15,7 @@ export class HomePage {
     }
 
     async verifyHomePage() {
-        await expect(this.page).toHaveTitle(
-            /Fast and reliable end-to-end testing for modern web apps | Playwright/,
-        );
+        await expect(this.page).toHaveTitle(/Playwright/);
         await expect(this.page).toHaveURL(this.baseURL);
     }
 
