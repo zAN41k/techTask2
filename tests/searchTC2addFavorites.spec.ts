@@ -4,6 +4,7 @@ import {test} from '../fixtures/pages.fixture';
 
 test.describe('Adding a search query to favorites ', () => {
     test.beforeEach(async ({page}) => {
+        //TODO need to set this setLocala also outside test and not using beforeEach
         await setLocalStorage(page, {
             recentSearches: localStorageData.recentSearches,
         });
