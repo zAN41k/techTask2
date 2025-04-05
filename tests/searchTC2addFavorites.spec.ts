@@ -1,27 +1,20 @@
-import {test} from '@playwright/test';
-
 import {localStorageData} from '../data/localStorage';
-import {SearchPage} from '../pages/search.page';
 import {setLocalStorage} from '../utils/localStorageUtils';
-import {HomePage} from '../pages/home.page';
+import {test} from '../fixtures/pages.fixture';
 
 test.describe('Adding a search query to favorites ', () => {
-    let searchPage: SearchPage;
-    let homePage: HomePage;
     test.beforeEach(async ({page}) => {
-        searchPage = new SearchPage(page);
-        homePage = new HomePage(page);
         await setLocalStorage(page, {
             recentSearches: localStorageData.recentSearches,
         });
-        await page.goto('/');
     });
 
     test('Adding a search query to favorites and verify additional information ', async ({
-        page,
+        homePage,
+        searchPage,
     }) => {
         await test.step('open search button in palywright.dev', async () => {
-            homePage.verifysearchButton();
+            await homePage.verifyMainPageElements();
         });
         await test.step('verify we have a recent searches Release notes, have cross button, favorite button', async () => {
             searchPage.verifySearchHitMessage();

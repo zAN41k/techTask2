@@ -42,4 +42,11 @@ export class HomePage {
             throw new Error(`Failed to click search button: ${error.message}`);
         }
     }
+
+    async verifyMainPageElements() {
+        await this.verifyHomePage();
+        await this.verifygitHubIcon();
+        await this.verifyDiscordLink();
+        await this.verifysearchButton();
+    }
 }

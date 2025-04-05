@@ -1,25 +1,20 @@
-import {test} from '@playwright/test';
-
 import {localStorageData} from '../data/localStorage';
-import {HomePage} from '../pages/home.page';
-import {SearchPage} from '../pages/search.page';
 import {setLocalStorage} from '../utils/localStorageUtils';
+import {test} from '../fixtures/pages.fixture';
 
 test.describe('Search flow delete from favorites ', () => {
-    let homePage: HomePage;
-    let searchPage: SearchPage;
     test.beforeEach(async ({page}) => {
-        homePage = new HomePage(page);
-        searchPage = new SearchPage(page);
         await setLocalStorage(page, {
             recentSearches: localStorageData.favoriteSearches,
         });
-        await page.goto('/');
     });
 
-    test('Delete a search query from favorites ', async () => {
+    test('Delete a search query from favorites ', async ({
+        homePage,
+        searchPage,
+    }) => {
         await test.step('Navigate to search button', async () => {
-            homePage.verifysearchButton();
+            await homePage.verifyMainPageElements();
         });
 
         await test.step('verify we see a message in a Favorite Release notes have a cross delete button and delete from favorite', async () => {

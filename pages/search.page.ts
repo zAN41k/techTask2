@@ -58,8 +58,6 @@ export class SearchPage {
         await this.searchInput.fill(txt);
     }
     async verifysearchResultReleaseNotes(txt: string) {
-        await this.searchResultReleaseNotes.waitFor({state: 'visible'});
-        await expect(this.searchResultReleaseNotes).toBeVisible();
         await expect(this.searchResultReleaseNotes).toHaveText(txt);
     }
 
@@ -72,11 +70,12 @@ export class SearchPage {
     }
 
     async verifyHitTitle(txt: string) {
-        await expect(this.searchHitTitle).toBeVisible();
+        await this.page.waitForLoadState('domcontentloaded');
         await expect(this.searchHitTitle).toHaveText(txt);
     }
 
     async verifySearchDeleteFrom() {
+        await this.page.waitForLoadState();
         await expect(this.searchCrossRemoveFrom).toBeVisible();
     }
 
