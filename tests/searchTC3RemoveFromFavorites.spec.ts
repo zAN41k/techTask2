@@ -18,9 +18,9 @@ test.describe('Search flow delete from favorites ', () => {
         });
 
         await test.step('verify we see a message in a Favorite Release notes have a cross delete button and delete from favorite', async () => {
-            searchPage.verifyHitTitle('Release notes');
-            searchPage.verifySearchDeleteFrom();
-            searchPage.deleteFromFavorite();
+            await searchPage.verifyHitTitle('Release notes');
+            await searchPage.verifySearchDeleteFrom();
+            await searchPage.deleteFromFavorite();
         });
 
         await test.step('after we delete from favorite verify we dont have any favorite and see a message No recent searches', async () => {

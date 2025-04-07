@@ -20,8 +20,8 @@ test.describe('Search flow remove querry from recent ', () => {
             searchPage.verifysearchResultReleaseNotes('Release notes');
         });
         await test.step('verify we have a button remove from favorite', async () => {
-            searchPage.verifyRemoveFromFavorite();
-            searchPage.removeFromFavoriteQuerry();
+            await searchPage.verifyRemoveFromFavorite();
+            await searchPage.removeFromFavoriteQuerry();
         });
 
         await test.step('verify we dont have any recent searches after we deleted', async () => {

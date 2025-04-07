@@ -18,15 +18,15 @@ test.describe('Adding a search query to favorites ', () => {
             await homePage.verifyMainPageElements();
         });
         await test.step('verify we have a recent searches Release notes, have cross button, favorite button', async () => {
-            searchPage.verifySearchHitMessage();
-            searchPage.verifyHitTitle('Release notes');
-            searchPage.verifySearchDeleteFrom();
-            searchPage.verifyAddToFAvoriteIconeAndAdd();
+            await searchPage.verifySearchHitMessage();
+            await searchPage.verifyHitTitle('Release notes');
+            await searchPage.verifySearchDeleteFrom();
+            await searchPage.verifyAddToFAvoriteIconeAndAdd();
         });
 
         await test.step('verify after we added recent dearch to favorite we have a cross delete buttone and remove from favorite', async () => {
-            searchPage.verifySearchDeleteFrom();
-            searchPage.verifyRemoveFromFavorite();
+            await searchPage.verifySearchDeleteFrom();
+            await searchPage.verifyRemoveFromFavorite();
         });
 
         await test.step('recent message was changed to Favorite', async () => {
