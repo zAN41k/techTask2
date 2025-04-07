@@ -53,3 +53,5 @@ jobs:
               with:
                   personal_token: ${{ secrets.MY_TOKEN }}
                   publish_dir: ./allure-report
+                  destination_dir: .
+                  commit_message: 'Deploy Allure report to root'
