@@ -71,6 +71,11 @@ jobs:
                   name: allure-results
                   path: allure-results
 
+            - name: Clean previous report
+              run: |
+                  rm -rf allure-report || true
+                  rm -rf ./docs || true
+
             - name: Generate Allure report
               run: npx allure generate allure-results -o allure-report
 
@@ -81,4 +86,5 @@ jobs:
                   personal_token: ${{ secrets.MY_TOKEN }}
                   publish_dir: ./allure-report
                   destination_dir: .
-                  commit_message: 'Deploy Allure report to root'
+                  force_orphan: true
+                  commit_message: 'Deploy Allure report [skip ci]'
