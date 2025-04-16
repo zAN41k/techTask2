@@ -1,5 +1,4 @@
 import {defineConfig, devices} from '@playwright/test';
-import allure from 'allure-playwright';
 
 /**
  * Read environment variables from file.
