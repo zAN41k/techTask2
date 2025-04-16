@@ -15,9 +15,6 @@ jobs:
     test:
         timeout-minutes: 60
         runs-on: ubuntu-latest
-        environment:
-            name: github-pages
-            url: ${{ steps.deployment.outputs.page_url }}
         steps:
             - uses: actions/checkout@v4
 
@@ -50,27 +47,34 @@ jobs:
               id: test-run
               run: |
                   docker run --rm -v $(pwd)/allure-results:/app/allure-results playwright-tests:latest
-                  exit_code=$?
-                  echo "test_exit_code=$exit_code" >> $GITHUB_OUTPUT
-              continue-on-error: true
 
-            - name: Clean Allure report directory
-              if: always()
-              run: rm -rf allure-report
-
-            - name: Generate Allure report
-              if: always()
-              run: npx allure generate allure-results -o allure-report
-
-            - name: Upload Allure report
+            - name: Upload test results
               if: always()
               uses: actions/upload-artifact@v4.6.2
               with:
-                  name: allure-report
-                  path: allure-report
+                  name: allure-results
+                  path: allure-results
+
+    report:
+        needs: test
+        if: always()
+        runs-on: ubuntu-latest
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Download test results
+              uses: actions/download-artifact@v4
+              with:
+                  name: allure-results
+                  path: allure-results
+
+            - name: Generate Allure report
+              run: npx allure generate allure-results -o allure-report
 
             - name: Deploy to GitHub Pages
-              if: always()
               id: deployment
               uses: peaceiris/actions-gh-pages@v3
               with:
@@ -78,7 +82,3 @@ jobs:
                   publish_dir: ./allure-report
                   destination_dir: .
                   commit_message: 'Deploy Allure report to root'
-
-            - name: Set job status
-              if: always()
-              run: exit ${{ steps.test-run.outputs.test_exit_code }}
