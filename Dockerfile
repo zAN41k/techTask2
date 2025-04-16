@@ -1,8 +1,9 @@
-FROM mcr.microsoft.com/playwright:v1.41.0-jammy
+FROM mcr.microsoft.com/playwright:v1.51.1-jammy
 
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
 
-CMD ["npx", "playwright", "test", "--project=chromium"]
+ENTRYPOINT ["npx", "playwright"]
+CMD ["test", "--project=chromium"]

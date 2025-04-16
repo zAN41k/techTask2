@@ -1,9 +1,10 @@
-version: '3.8'
 services:
     tests:
         build: .
         volumes:
             - .:/app
             - /app/node_modules
+            - ./allure-results:/app/allure-results
         environment:
             - CI=true
+        command: ['test', '--project=chromium']
