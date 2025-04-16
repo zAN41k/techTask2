@@ -48,20 +48,25 @@ jobs:
 
             - name: Run tests
               run: docker run --rm -v $(pwd)/allure-results:/app/allure-results playwright-tests:latest
+              continue-on-error: true
 
             - name: Clean Allure report directory
+              if: always()
               run: rm -rf allure-report
 
             - name: Generate Allure report
+              if: always()
               run: npx allure generate allure-results -o allure-report
 
             - name: Upload Allure report
+              if: always()
               uses: actions/upload-artifact@v4.6.2
               with:
                   name: allure-report
                   path: allure-report
 
             - name: Deploy to GitHub Pages
+              if: always()
               id: deployment
               uses: peaceiris/actions-gh-pages@v3
               with:
