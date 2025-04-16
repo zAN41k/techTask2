@@ -20,20 +20,14 @@ jobs:
             url: ${{ steps.deployment.outputs.page_url }}
         steps:
             - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: lts/*
 
-            - name: Install dependencies
-              run: npm ci
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
 
-            - name: Install Playwright Browsers
-              run: npx playwright install chromium
-
-            - name: Run Playwright tests
-              run: npx playwright test --project=chromium
-              env:
-                  CI: true
+            - name: Build and run tests
+              run: |
+                  docker build -t playwright-tests .
+                  docker run --rm -v $(pwd)/allure-results:/app/allure-results playwright-tests
 
             - name: Clean Allure report directory
               run: rm -rf allure-report
