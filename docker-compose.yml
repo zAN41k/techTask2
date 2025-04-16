@@ -9,4 +9,11 @@ services:
             - ./allure-results:/app/allure-results
         environment:
             - CI=true
+        deploy:
+            resources:
+                limits:
+                    memory: 4G
+                    cpus: '2'
+        ipc: host
+        init: true
         command: ['test', '--project=chromium']
