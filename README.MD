@@ -18,45 +18,103 @@ This project is a Playwright-based test automation framework for testing web app
    ```bash
    git clone git@github.com:zAN41k/techTask2.git
    cd techtask2
+   ```
 
+2. Install dependencies:
 
-Install dependencies
+   ```bash
+   npm install
+   ```
 
-npm install
+### **Running Tests**
 
-Running Tests
-
-Run All Tests
+#### Run All Tests
 To execute all tests in the project:
 
+```bash
 npx playwright test
+```
 
-Run a Specific Test
+#### Run a Specific Test
 To run a specific test file:
-npx playwright test tests/searchTC1E2E.spec.ts
 
-Run Tests in Debug Mode
+```bash
+npx playwright test tests/searchTC1E2E.spec.ts
+```
+
+#### Run Tests in Debug Mode
 To debug tests interactively:
 
+```bash
 npx playwright test --debug
+```
 
-Run Tests in Headed Mode
+#### Run Tests in Headed Mode
 To run tests with a visible browser window:
 
+```bash
 npx playwright test --headed
+```
 
-Run test in ui mode
+#### Run test in UI mode
 
+```bash
 npx playwright test --ui
+```
 
-
-Generate an HTML Report
+#### Generate an HTML Report
 To generate a test report:
 
+```bash
 npx playwright test --reporter=html
+```
 
-The report will be available in the playwright-report directory.
+The report will be available in the `playwright-report` directory.
 
+## **Running Tests with Docker**
+
+### Using Docker Compose (Recommended)
+The simplest way to run tests locally:
+
+```bash
+docker compose run --rm tests
+```
+
+This command:
+- Uses the pre-configured Docker Compose setup
+- Automatically handles volume mounting and environment variables
+- Removes the container after completion
+
+### Alternative: Using Docker Directly
+To build the Docker image locally:
+
+```bash
+docker build -t playwright-tests .
+```
+
+### Run Tests in Docker
+To run all tests in Docker:
+
+```bash
+docker run --rm -v $(pwd)/allure-results:/app/allure-results playwright-tests:latest
+```
+
+This command:
+- Uses the `--rm` flag to automatically remove the container when it exits
+- Mounts the local `allure-results` directory to collect test reports
+- Uses the latest version of our Playwright tests image
+
+### View Test Results
+After running tests in Docker, you can generate the Allure report locally:
+
+```bash
+npx allure generate allure-results -o allure-report
+npx allure open allure-report
+```
+
+## **Project Structure**
+
+```plaintext
 techtask/
 ├── data/
 │   └── localStorage.ts         # Local storage data for tests
@@ -66,35 +124,32 @@ techtask/
 │   └── releaseNotes.page.ts    # Page Object Model for the release notes page
 ├── tests/
 │   ├── goToGithub.spec.ts      # Test for navigating to GitHub
-│   ├── searchTC1E2E.spec.ts # Test for search flow using POM
+│   ├── searchTC1E2E.spec.ts    # Test for search flow using POM
 │   └── searchTC2addFavorites.spec.ts # Test for adding search queries to favorites
 ├── utils/
 │   └── localStorageUtils.ts    # Utility functions for managing local storage
 ├── [playwright.config.ts]      # Playwright configuration file
 ├── [package.json]              # Project dependencies and scripts
 ├── [package-lock.json]         # Dependency lock file
-└── [README.MD]                # Project documentation
+└── [README.MD]                 # Project documentation
+```
 
-Implemented Logic
+## **Implemented Logic**
 
-1. Page Object Model (POM)
-The project uses the POM design pattern to encapsulate page-specific logic and locators in separate classes.
-Example:
-home.page.ts: Contains methods to interact with the home page.
-search.page.ts: Contains methods to interact with the search page.
-1. Local Storage Management
-Local storage data is stored in data/localStorage.ts.
-Utility functions in utils/localStorageUtils.ts are used to set local storage keys and values dynamically during tests.
-1. Test Cases
-goToGithub.spec.ts:
-Verifies navigation to the GitHub repository link.
-goToDiscord.spec.ts:
-Verifies navigation to the Dicord repository link.
-searchTC1E2E.spec.ts.spec.ts:
-Tests the end-to-end search flow.
-searchTC2addFavorites.spec.ts
-Adding a Search Query to Favorites
-searchTC3RemoveFromFavorites.spec.ts
-Removing a Search Query from Favorites
-searchTC4RemoveQuerryFromRecent.spec.ts
-Removing a Search Query from Recent Searches
+1. **Page Object Model (POM)**
+   The project uses the POM design pattern to encapsulate page-specific logic and locators in separate classes.
+   Example:
+   - `home.page.ts`: Contains methods to interact with the home page.
+   - `search.page.ts`: Contains methods to interact with the search page.
+
+2. **Local Storage Management**
+   Local storage data is stored in `data/localStorage.ts`.
+   Utility functions in `utils/localStorageUtils.ts` are used to set local storage keys and values dynamically during tests.
+
+3. **Test Cases**
+   - `goToGithub.spec.ts`: Verifies navigation to the GitHub repository link.
+   - `goToDiscord.spec.ts`: Verifies navigation to the Discord repository link.
+   - `searchTC1E2E.spec.ts`: Tests the end-to-end search flow.
+   - `searchTC2addFavorites.spec.ts`: Adding a Search Query to Favorites
+   - `searchTC3RemoveFromFavorites.spec.ts`: Removing a Search Query from Favorites
+   - `searchTC4RemoveQuerryFromRecent.spec.ts`: Removing a Search Query from Recent Searches

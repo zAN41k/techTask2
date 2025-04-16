@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "test": "npx playwright test",
-  "a:r": "allure generate allure-results --clean -o allure-report",
-  "a:o": "allure open allure-report"
+    "test": "npx playwright test",
+    "a:r": "allure generate allure-results --clean -o allure-report",
+    "a:o": "allure open allure-report",
+    "docker:test": "docker compose run --rm tests"
   },
   "keywords": [],
   "author": "",
@@ -23,5 +24,4 @@
   "dependencies": {
     "prettier": "^3.5.3"
   }
-
 }
