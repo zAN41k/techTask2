@@ -47,7 +47,11 @@ jobs:
                   mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
             - name: Run tests
-              run: docker run --rm -v $(pwd)/allure-results:/app/allure-results playwright-tests:latest
+              id: test-run
+              run: |
+                  docker run --rm -v $(pwd)/allure-results:/app/allure-results playwright-tests:latest
+                  exit_code=$?
+                  echo "test_exit_code=$exit_code" >> $GITHUB_OUTPUT
               continue-on-error: true
 
             - name: Clean Allure report directory
@@ -74,3 +78,7 @@ jobs:
                   publish_dir: ./allure-report
                   destination_dir: .
                   commit_message: 'Deploy Allure report to root'
+
+            - name: Set job status
+              if: always()
+              run: exit ${{ steps.test-run.outputs.test_exit_code }}
