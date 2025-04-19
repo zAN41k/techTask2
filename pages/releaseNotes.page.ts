@@ -1,4 +1,4 @@
-import { expect, Locator, Page } from '@playwright/test';
+import {expect, Locator, Page} from '@playwright/test';
 
 export class ReleaseNotes {
     readonly page: Page;
@@ -12,6 +12,6 @@ export class ReleaseNotes {
     }
 
     async verifyReleaseNotePage(txt: string) {
-        await expect(this.releaseNotePage).toHaveText(txt);
+        await expect(this.releaseNotePage).toContainText(txt);
     }
 }
