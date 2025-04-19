@@ -73,11 +73,64 @@ The report will be available in the `playwright-report` directory.
 
 ## **Running Tests with Docker**
 
+### Updating Playwright
+To update Playwright to the latest version (currently 1.52):
+
+1. Update dependencies in package.json:
+   ```bash
+   npm install @playwright/test@1.52 playwright@1.52
+   ```
+
+2. Update browsers:
+   ```bash
+   npx playwright install
+   ```
+
+3. Update Docker image:
+   ```bash
+   # Rebuild the Docker image with new version
+   docker build --no-cache -t playwright-tests .
+   ```
+
+4. Clean up old containers and images (optional):
+   ```bash
+   docker system prune -f
+   ```
+
 ### Using Docker Compose (Recommended)
 The simplest way to run tests locally:
 
 ```bash
 docker compose run --rm tests
+```
+
+The tests run with 4 parallel workers by default. You can modify the number of workers by:
+
+```bash
+# Run with 2 workers
+docker compose run --rm tests test --workers=2
+
+# Run with 4 workers
+docker compose run --rm tests test --workers=4
+```
+
+Note: The number of workers should not exceed the number of CPU cores allocated in docker-compose.yml
+
+#### Verify Playwright Version
+To check the Playwright version in your Docker container:
+
+```bash
+# Make the version check script executable
+chmod +x scripts/check-version.sh
+
+# Run the version check
+./scripts/check-version.sh
+```
+
+Expected output should show:
+```
+Version 1.52.0
+Playwright CLI
 ```
 
 This command:
@@ -125,7 +178,10 @@ techtask/
 ├── tests/
 │   ├── goToGithub.spec.ts      # Test for navigating to GitHub
 │   ├── searchTC1E2E.spec.ts    # Test for search flow using POM
-│   └── searchTC2addFavorites.spec.ts # Test for adding search queries to favorites
+│   ├── searchTC2addFavorites.spec.ts # Test for adding search queries to favorites
+│   ├── snapshot.spec.ts        # Snapshot testing examples
+│   └── searchTC3RemoveFromFavorites.spec.ts # Test for removing search queries from favorites
+│   └── searchTC4RemoveQuerryFromRecent.spec.ts # Test for removing search queries from recent searches
 ├── utils/
 │   └── localStorageUtils.ts    # Utility functions for managing local storage
 ├── [playwright.config.ts]      # Playwright configuration file
